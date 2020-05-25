@@ -18,13 +18,14 @@ export_env_dir $3
 echo "-----> Notifying CircleCI of this deploy..."
 # https://circleci.com/docs/2.0/api-intro/#triggering-a-pipeline-with-parameters-example
 curl \
-  -u ${CIRCLECI_TOKEN}: \
   -X POST \
   --header 'Content-type: application/json' \
+  --header 'circle-token: ${CIRCLECI_TOKEN}'
   --data '{
+    "branch": "todo:",
     "parameters": {
-      "package": "${HEROKU_APP_NAME}",
-      "run_acceptance_tests": true
+      "package_name": "${HEROKU_APP_NAME}",
+      "post_deploy": true
     }
   }' \
   https://circleci.com/api/v2/project/${CIRCLECI_PROJECT_SLUG}/pipeline
